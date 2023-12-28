@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import Link from "next/link";
 import { sort } from "fast-sort";
 
 interface User {
@@ -8,34 +9,28 @@ interface User {
 }
 
 interface Props {
-  searchParams: { sortOrder: string };
+  sortOrder: string;
 }
 
-const UserTable = async ({ searchParams: { sortOrder } }: Props) => {
-  const [ascending, setAscending] = React.useState(true);
-  const [sortedUsers, setSortedUsers] = React.useState<User[]>([]);
-
+const UserTable = async ({ sortOrder }: Props) => {
   const res = await fetch("https://jsonplaceholder.typicode.com/users", {
     // cache: "no-store",
   });
   const users: User[] = await res.json();
-
-  useEffect(() => {
-    let sorted = [];
-    if (ascending) {
-      sorted = sort(users).asc((user) => user.name);
-    } else {
-      sorted = sort(users).desc((user) => user.name);
-    }
-    setSortedUsers(sorted);
-  }, [ascending]);
+  const sortedUsers = sort(users).asc(
+    sortOrder === "email" ? (user) => user.email : (user) => user.name
+  );
 
   return (
     <table className="table table-bordered">
       <thead>
         <tr>
-          <th onClick={() => setAscending(!ascending)}>Name</th>
-          <th onClick={() => setAscending(!ascending)}>Email</th>
+          <th>
+            <Link href="/users?sortOrder=name">Name</Link>
+          </th>
+          <th>
+            <Link href="/users?sortOrder=email">Email</Link>
+          </th>
         </tr>
       </thead>
       <tbody>
