@@ -17,6 +17,7 @@
     "eslint-config-next": "14.0.3",
     "fast-sort": "^3.4.0",
     "next": "13.4.13",
+    "next-auth": "^4.24.5",
     "postcss": "8.4.31",
     "react": "18.2.0",
     "react-dom": "18.2.0",
